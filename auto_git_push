@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# This script automates the git add, commit, and push process
+# If no arguments were passed, it automatically adds all files
+#+ requests commit messages from the user for each file and pushes
+# If arguments were passed, it adds the files passed as argument
+#+ requests commit messages for the files passed as arg, then pushes
+
+if [ $# -eq 0 ];
+then
+	# Add all files
+	git add .
+else
+	# Adds only files passed as CLI argument and EXISTS
+        COUNT=1
+        # check if file exists
+        while [ $COUNT -le $# ];
+        do
+                # Here we use var. indirection to get the value stored in COUNT
+                # if the file exists ADD if NOT do NOTHING
+                if [ -e "${!COUNT}" ]
+                then
+                        git add "${!COUNT}"
+                fi
+	done
+fi
+
+# check if anything was added
+ADDED_FILES=$(git diff --staged --name-only)
+# checks if added files is not NULL
+if [ -n "$ADDED_FILES" ];
+then
+	for FILE_NAME in $ADDED_FILES;
+	do
+		echo "Enter a commit message for ${FILE_NAME}: "
+		# receive commit message from user
+		read -r COMM_MSG
+		git commit -m "${COMM_MSG}"
+	done;
+else
+	# No files were added
+	echo "No files were added"
+	exit 0
+fi
+# push changes
+git push
