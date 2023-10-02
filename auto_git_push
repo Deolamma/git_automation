@@ -7,10 +7,10 @@
 
 if [ $# -eq 0 ];
 then
-	# Add all files
+	# Add all files if no CLI argument is passed
 	git add .
 else
-	# Adds only files passed as CLI argument and EXISTS
+	# Adds only files passed as CLI argument and file EXISTS
         COUNT=1
         # check if file exists
         while [ $COUNT -le $# ];
@@ -40,21 +40,22 @@ then
 		TRIAL=1
 		while [ $TRIAL -le 3 ];
 		do
+                        if [ $TRIAL == 3 ]
+                        then
+                                echo "\n<<<<<THIS IS THE LAST CHANCE>>>>\n"
+                        fi
+			#prompt user to enter commit message
 			echo "Enter a commit message for ${FILE_NAME}: "
-			read -r COMMIT_MSG
+     			read -r COMMIT_MSG
 			if [ -z "$COMMIT_MSG" ];
 			then
-				if [ $TRIAL == 3 ]
-				then
-					echo "<<<<<THIS IS THE LAST CHANCE>>>>"
-				fi
 				echo "Commit message cannot be empty!!!"
 			else
 				break
 			fi
 			((TRIAL++))
 		done
-		if [ -z "$COMMIT_MSG" ]
+		if [ -z "$(echo "$COMMIT_MSG" | tr -d ' ')" ]
 		then
 			git reset "$FILE_NAME"
 		else

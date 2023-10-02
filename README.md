@@ -47,10 +47,12 @@ Replace /path/to/git-automation-script with the absolute path to the directory c
 
 	- To add and commit specific files, provide the file names as command line arguments:
 
+	```bash
 	auto_git_push file1.txt file2.txt
 
 	- To add and commit all files in the current directory, run the script without command line arguments:
 
+	```bash
 	auto_git_push
 
 - **Follow the Prompts:** The script will prompt you to enter commit messages for each file you are committing.
@@ -66,6 +68,6 @@ If you have suggestions or find issues with the script, please open an issue or 
 
 ## Contact
 For questions or feedback, feel free to contact me at:
-- Mail: [adebanjoemmanuel01@gmail.com][adebanjoemmanuel01@gmail.com].
-- LinkedIn: [https://www.linkedin.com/in/adebanjo-emmanuel][https://www.linkedin.com/in/adebanjo-emmanuel]
-- X or Twitter: [https://twitter.com/Deolamma][https://twitter.com/Deolamma] 
+- E-mail: adebanjoemmanuel01@gmail.com
+- LinkedIn: https://www.linkedin.com/in/adebanjo-emmanuel
+- X or Twitter: https://twitter.com/Deolamma 
