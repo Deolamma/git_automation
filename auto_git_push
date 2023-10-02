@@ -17,6 +17,8 @@ else
         do
                 # Here we use var. indirection to get the value stored in COUNT
                 # if the file exists ADD if NOT do NOTHING
+		# We do nothing because we might have other valid files
+		#+ and we still want the process to continue for those files
                 if [ -e "${!COUNT}" ]
                 then
                         git add "${!COUNT}"
