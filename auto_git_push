@@ -21,6 +21,7 @@ else
                 then
                         git add "${!COUNT}"
                 fi
+		((COUNT++))
 	done
 fi
 
@@ -31,10 +32,32 @@ if [ -n "$ADDED_FILES" ];
 then
 	for FILE_NAME in $ADDED_FILES;
 	do
-		echo "Enter a commit message for ${FILE_NAME}: "
 		# receive commit message from user
-		read -r COMM_MSG
-		git commit -m "${COMM_MSG}"
+		# commit message cannot be empty
+		COMMIT_MSG=""
+		TRIAL=1
+		while [ $TRIAL -le 3 ];
+		do
+			echo "Enter a commit message for ${FILE_NAME}: "
+			read -r COMMIT_MSG
+			if [ -z "$COMMIT_MSG" ];
+			then
+				if [ $TRIAL == 3 ]
+				then
+					echo "<<<<<THIS IS THE LAST CHANCE>>>>"
+				fi
+				echo "Commit message cannot be empty!!!"
+			else
+				break
+			fi
+			((TRIAL++))
+		done
+		if [ -z "$COMMIT_MSG" ]
+		then
+			git reset "$FILE_NAME"
+		else
+			git commit -m "${COMMIT_MSG}"
+		fi
 	done;
 else
 	# No files were added
