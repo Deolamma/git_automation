@@ -37,14 +37,14 @@ This is a Bash script designed to automate common Git operations, including addi
 
 - **Add the Script to Your PATH:** To run the script from anywhere on your system, it's a good practice to add the script's directory to your system's PATH environment variable. This step allows you to execute the script without specifying its full path every time. You can add the following line to your shell profile file (e.g., `.bashrc`, `.zshrc`, or `.profile`) to make the script globally executable: **Make sure you don't add the name of the script as part of the path, stop in the folder where the script is saved**
 
-    '''bash
+    ```bash
     sudo vi ~/.bashrc
 
 Add this line to the `.bashrc`, `.zshrc`, or `.profile` file
 
     export PATH="$PATH:/path/to/git-automation-script"
 
-**Replace /path/to/git-automation-script with the absolute path to the directory containing your script.**
+Replace **/path/to/git-automation-script** with the absolute path to the directory containing your script.
 
 - **Open a New Terminal Session:** After adding the script's directory to your PATH, open a new terminal session (or restart your shell) to apply the changes. **OR**
     ```bash
