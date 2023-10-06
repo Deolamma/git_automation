@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a Bash script designed to automate common Git operations, including adding, committing, and pushing changes to a Git repository. The script is concise and only pushes to the remote repository, however, it can be expanded to suit your pconcise
+This is a Bash script designed to automate common Git operations, including adding, committing, and pushing changes to a Git repository. The script is concise and only pushes to the remote repository, however, it can be expanded to suit your purposes such as pushing to a specific branch or to an upstream
 
 ## Features
 
@@ -30,30 +30,35 @@ This is a Bash script designed to automate common Git operations, including addi
     ```bash
     cd git_automation
 
-- **Make the Script Executable:** Ensure that the script file is executable. You may have already done this, but if not, use the `chmod` command to make it executable:
+- **Make the Script Executable:** Ensure that the script file is executable. You may already have this done, but if not, use the `chmod` command to make it executable:
 
     ```bash
     chmod u+x auto_git_push
 
 - **Add the Script to Your PATH:** To run the script from anywhere on your system, it's a good practice to add the script's directory to your system's PATH environment variable. This step allows you to execute the script without specifying its full path every time. You can add the following line to your shell profile file (e.g., `.bashrc`, `.zshrc`, or `.profile`) to make the script globally executable: **Make sure you don't add the name of the script as part of the path, stop in the folder where the script is saved**
 
+    '''bash
+    sudo vi ~/.bashrc
+Add this line to the `.bashrc`, `.zshrc`, or `.profile` file
     export PATH="$PATH:/path/to/git-automation-script"
 
-Replace /path/to/git-automation-script with the absolute path to the directory containing your script.
+**Replace /path/to/git-automation-script with the absolute path to the directory containing your script.**
 
-- **Open a New Terminal Session:** After adding the script's directory to your PATH, open a new terminal session (or restart your shell) to apply the changes.
+- **Open a New Terminal Session:** After adding the script's directory to your PATH, open a new terminal session (or restart your shell) to apply the changes. **OR**
+    ```bash
+    source ~/.bashrc
 
 - **Run the Script:** You can now run the Git automation script from anywhere on your system. Use the script name and provide any desired command line arguments.
 
 	- To add and commit specific files, provide the file names as command line arguments:
 
-	```bash
-	auto_git_push file1.txt file2.txt
+		```bash
+		auto_git_push file1.txt file2.txt
 
 	- To add and commit all files in the current directory, run the script without command line arguments:
 
-	```bash
-	auto_git_push
+		```bash
+		auto_git_push
 
 - **Follow the Prompts:** The script will prompt you to enter commit messages for each file you are committing.
 
