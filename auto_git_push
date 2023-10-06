@@ -5,67 +5,86 @@
 # If arguments were passed, it adds the files passed as argument
 #+ requests commit messages for the files passed as arg, then pushes
 
+MAX_COMMIT_RETRIES=3
+
+# Function to add files
+add_files () {
+	# Adds only files passed as CLI argument and file EXISTS
+        local count=1
+        # check if file exists
+        while [ $count -le $# ];
+        do
+                # Here we use var. indirection to get the value stored in count
+                # if the file exists ADD if NOT do NOTHING
+                # We do nothing because we might have other valid files
+                #+ and we still want the process to continue for those files
+                if [ -e "${!count}" ]
+                then
+                        git add "${!count}"
+                else
+                        echo "File ${!count} does not exist"
+                fi
+                ((count++))
+        done
+}
+
+# function to commit files
+commit_file () {
+
+	local file_name="$1"
+	local commit_retries=1
+
+	while [ $commit_retries -le $MAX_COMMIT_RETRIES ];
+	do
+		if [ $commit_retries == $MAX_COMMIT_RETRIES ]
+		then
+			echo ""
+			echo "<<<<<THIS IS THE LAST CHANCE>>>>"
+		fi
+		# prompt user to enter commit message
+		echo "Enter a commit message for ${file_name}: "
+		# receive message from user
+		read -r commit_msg
+		if [ -n "$commit_msg" ];
+		then
+			git commit "${file_name}" -m "${commit_msg}"
+			return
+		else
+			echo "Commit message cannot be empty!!!"
+			((commit_retries++))
+		fi
+	done
+	# if commit_msg is empty then reset particular file
+	echo "git resetting ${file_name}.............."
+	git reset "$file_name"
+}
+
+
 if [ $# -eq 0 ];
 then
 	# Add all files if no CLI argument is passed
 	git add .
 else
-	# Adds only files passed as CLI argument and file EXISTS
-        COUNT=1
-        # check if file exists
-        while [ $COUNT -le $# ];
-        do
-                # Here we use var. indirection to get the value stored in COUNT
-                # if the file exists ADD if NOT do NOTHING
-		# We do nothing because we might have other valid files
-		#+ and we still want the process to continue for those files
-                if [ -e "${!COUNT}" ]
-                then
-                        git add "${!COUNT}"
-                fi
-		((COUNT++))
-	done
+	# add individual files
+	add_files "$@"
 fi
 
 # check if anything was added
-ADDED_FILES=$(git diff --staged --name-only)
-# checks if added files is not NULL
-if [ -n "$ADDED_FILES" ];
+added_files=$(git diff --staged --name-only)
+
+# checks if added file is not NULL
+if [ -n "$added_files" ];
 then
-	for FILE_NAME in $ADDED_FILES;
+	# Loop through each file that has been added
+	for file_name in $added_files;
 	do
-		# receive commit message from user
-		# commit message cannot be empty
-		COMMIT_MSG=""
-		TRIAL=1
-		while [ $TRIAL -le 3 ];
-		do
-                        if [ $TRIAL == 3 ]
-                        then
-                                echo "\n<<<<<THIS IS THE LAST CHANCE>>>>\n"
-                        fi
-			#prompt user to enter commit message
-			echo "Enter a commit message for ${FILE_NAME}: "
-     			read -r COMMIT_MSG
-			if [ -z "$COMMIT_MSG" ];
-			then
-				echo "Commit message cannot be empty!!!"
-			else
-				echo "$FILE_NAME"
-				git commit "${FILE_NAME}" -m "${COMMIT_MSG}"
-				break
-			fi
-			((TRIAL++))
-		done
-		if [ -z "$(echo "$COMMIT_MSG" | tr -d ' ')" ]
-		then
-			git reset "$FILE_NAME"
-		fi
+		commit_file "$file_name"
 	done;
 else
 	# No files were added
 	echo "No files were added"
 	exit 0
 fi
+
 # push changes
 git push
