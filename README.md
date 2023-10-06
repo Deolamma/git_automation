@@ -39,7 +39,9 @@ This is a Bash script designed to automate common Git operations, including addi
 
     '''bash
     sudo vi ~/.bashrc
+
 Add this line to the `.bashrc`, `.zshrc`, or `.profile` file
+
     export PATH="$PATH:/path/to/git-automation-script"
 
 **Replace /path/to/git-automation-script with the absolute path to the directory containing your script.**
