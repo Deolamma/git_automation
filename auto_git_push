@@ -51,6 +51,8 @@ then
 			then
 				echo "Commit message cannot be empty!!!"
 			else
+				echo "$FILE_NAME"
+				git commit "${FILE_NAME}" -m "${COMMIT_MSG}"
 				break
 			fi
 			((TRIAL++))
@@ -58,8 +60,6 @@ then
 		if [ -z "$(echo "$COMMIT_MSG" | tr -d ' ')" ]
 		then
 			git reset "$FILE_NAME"
-		else
-			git commit -m "${COMMIT_MSG}"
 		fi
 	done;
 else
